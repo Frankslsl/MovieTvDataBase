@@ -68,7 +68,7 @@ export const TvShowDetails = () => {
 							</ListGroupItem>
 							<ListGroupItem className="border-0 py-0 mb-1">
 								<h6 className="m-0 fst-italic">Number of Season:</h6>
-								<p className="m-0">{data.number_of_season}</p>
+								<p className="m-0">{data.number_of_seasons}</p>
 							</ListGroupItem>
 							<ListGroupItem className="border-0 py-0 mb-1">
 								<h6 className="m-0 fst-italic">Genre: :</h6>
