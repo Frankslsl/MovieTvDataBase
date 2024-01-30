@@ -1,5 +1,5 @@
 import axios from "axios";
-
+// for auth
 export const mutationLogin = async () => {
 	try {
 		const res = await axios({

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { z } from "zod";
-
+//for getting popular movies or tvshows from api, and show on home page
 export const dataSchema = z.array(
 	z.object({
 		id: z.number(),

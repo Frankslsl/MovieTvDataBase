@@ -10,6 +10,7 @@ import { z } from "zod";
 import { DisplayType } from "./pages/Home";
 import "./App.css";
 
+//only show 5 pages for home page
 const pageType = z.enum(["1", "2", "3", "4", "5"]);
 const displayTypeZ = z.nativeEnum(DisplayType);
 
@@ -29,7 +30,7 @@ function App() {
 	const displayTypeValidated = displayTypeZ.safeParse(displayType);
 	if (!displayTypeValidated.success) {
 		console.log(displayTypeValidated.error);
-		displayType = DisplayType.Movies; // 使用默认值
+		displayType = DisplayType.Movies;
 		searchParam.set("displayType", displayType);
 		setSearchParam(searchParam, { replace: true });
 	}
@@ -49,6 +50,7 @@ function App() {
 	return (
 		<>
 			<NavBarComp displayType={displayType} setPage={setPage} />
+			{/* ROUTES */}
 			<Routes>
 				<Route
 					path="/"

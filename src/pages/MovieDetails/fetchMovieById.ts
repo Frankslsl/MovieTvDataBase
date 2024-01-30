@@ -1,6 +1,7 @@
 import axios from "axios";
 import { NavigateFunction } from "react-router-dom";
 import { z } from "zod";
+//get data about the movie details
 
 const movieDataSchema = z.object({
 	title: z.string(),

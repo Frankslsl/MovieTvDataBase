@@ -17,6 +17,7 @@ type Props = {
 };
 
 const Home = ({ page, displayType, setPage }: Props) => {
+	//this mutation is for auth
 	const { mutate: authMutate } = useMutation({
 		mutationKey: "auth",
 		mutationFn: mutationLogin,
@@ -25,7 +26,7 @@ const Home = ({ page, displayType, setPage }: Props) => {
 			localStorage.setItem("guest_session_id", data.guest_session_id);
 		},
 	});
-
+	//make sure call the auth function every time the component has been rerender
 	useEffect(() => {
 		if (localStorage.getItem("guest_session_id") === null) {
 			authMutate();
@@ -42,6 +43,7 @@ const Home = ({ page, displayType, setPage }: Props) => {
 		() => fetchTvShows(page)
 	);
 
+	// if cant get any data from api
 	if (
 		(displayType === DisplayType.Movies && !moviesData) ||
 		(!tvShowsData && displayType === DisplayType.TvShow)
