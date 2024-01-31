@@ -9,39 +9,46 @@ import {
 	searchFetchTvShows,
 } from "./mutation";
 import { useMutation } from "react-query";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { ColumnDisplay } from "@/components/Column-display";
 import { Footer } from "@/components/Footer";
+import {
+	useDisplayTypeParams,
+	usePageParams,
+	useSearchAdultParams,
+	useSearchKeywordParams,
+} from "@/hooks/useURLParams";
+import { useNavigate } from "react-router-dom";
 
-const formDataSchema = z.object({
+export const formDataSchema = z.object({
 	keyword: z.string().min(1, "keyword is required"),
 	searchType: z.nativeEnum(DisplayType),
-	adult: z.enum(["true", "false"]),
+	adult: z.string(),
 });
 
 type TSformData = z.infer<typeof formDataSchema>;
 
 function SearchPage() {
+	const navigate = useNavigate();
 	//set page state
-	const [page, setPage] = useState(1);
+	const { setPage, page } = usePageParams(1);
 	//set display state
-	const [displayType, setDisplayType] = useState(DisplayType.Movies);
+	const { displayType: searchType, setDisplayType } = useDisplayTypeParams(
+		DisplayType.Movies
+	);
+
+	const { adult, setAdult } = useSearchAdultParams(true);
+	const { keyword, setKeyword } = useSearchKeywordParams("");
 
 	//set useForm
 	const {
 		handleSubmit,
-		watch,
+		// watch,
 		register,
 		formState: { errors },
 	} = useForm<TSformData>({
 		resolver: zodResolver(formDataSchema),
 	});
-	//get the form data item to be using in useEffect, when page has been change, onSubmit function should be called
-	const formDataKeyword = watch("keyword");
-	const formDataAdult = watch("adult");
-	const formDataSearchType = watch("searchType");
-
-	//set useMutate
 	const {
 		mutate: fetchMovie,
 		isLoading: fetchMovieIsLoading,
@@ -64,25 +71,10 @@ function SearchPage() {
 
 	//onsubmit
 	const onSubmit = (data: TSformData) => {
-		const formDataValidated = formDataSchema.safeParse(data);
-		console.log(formDataValidated.success);
-		if (formDataValidated.success) {
-			const params = {
-				keyword: formDataValidated.data.keyword,
-				page,
-				adult: formDataValidated.data.adult === "true",
-			};
-			if (formDataValidated.data.searchType === DisplayType.Movies) {
-				setDisplayType(DisplayType.Movies);
-				fetchMovie(params);
-			}
-			if (formDataValidated.data.searchType === DisplayType.TvShow) {
-				setDisplayType(DisplayType.TvShow);
-				fetchTvShow(params);
-			}
-		} else {
-			console.error(formDataValidated.error);
-		}
+		navigate(
+			`/search?page=${page}&keyword=${data.keyword}&adult=${data.adult}&displayType=${data.searchType}`,
+			{ replace: true }
+		);
 	};
 
 	//recall the fetch function as soon as page has been changed by footer
@@ -90,17 +82,29 @@ function SearchPage() {
 		console.log("first");
 		const submitForm = () => {
 			const formData = {
-				keyword: formDataKeyword,
-				adult: formDataAdult,
-				searchType: formDataSearchType,
+				keyword,
+				adult: adult.toString(),
+				searchType,
+				page,
 			};
-			onSubmit(formData);
-		};
 
-		if (page > 1) {
-			submitForm();
-		}
-	}, [page]);
+			if (keyword !== "") {
+				const formDataValidated = formDataSchema.safeParse(formData);
+				console.log("sec");
+				if (formDataValidated.success) {
+					if (formDataValidated.data.searchType === DisplayType.Movies) {
+						fetchMovie(formData);
+					}
+					if (formDataValidated.data.searchType === DisplayType.TvShow) {
+						fetchTvShow(formData);
+					}
+				} else {
+					console.error(formDataValidated.error);
+				}
+			}
+		};
+		submitForm();
+	}, [page, keyword, adult, searchType]);
 	return (
 		<Container className="mt-3">
 			<Form onSubmit={handleSubmit(onSubmit)}>
@@ -139,7 +143,7 @@ function SearchPage() {
 					<p>data is loading</p>
 				) : (
 					<div>
-						{displayType === DisplayType.Movies && fetchMovieData ? (
+						{searchType === DisplayType.Movies && fetchMovieData ? (
 							<>
 								<Container className="mb-5">
 									<h5 className="">
@@ -157,7 +161,7 @@ function SearchPage() {
 									setPage={setPage}
 								/>
 							</>
-						) : displayType === DisplayType.TvShow && fetchTvShowData ? (
+						) : searchType === DisplayType.TvShow && fetchTvShowData ? (
 							<>
 								<Container>
 									<h4>

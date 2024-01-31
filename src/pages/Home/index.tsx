@@ -17,6 +17,12 @@ type Props = {
 };
 
 const Home = ({ page, displayType, setPage }: Props) => {
+	useEffect(() => {
+		if (page > 5) {
+			console.log("working");
+			setPage(1);
+		}
+	}, [page]);
 	//this mutation is for auth
 	const { mutate: authMutate } = useMutation({
 		mutationKey: "auth",

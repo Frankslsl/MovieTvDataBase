@@ -1,51 +1,18 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
-import { useSearchParams } from "react-router-dom";
 import NavBarComp from "@/components/NavBarComp";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { MovieDetails } from "./pages/MovieDetails";
 import { TvShowDetails } from "./pages/tvShowDetails";
 import SearchPage from "./pages/SearchPage";
-import { z } from "zod";
 import { DisplayType } from "./pages/Home";
 import "./App.css";
-
-//only show 5 pages for home page
-const pageType = z.enum(["1", "2", "3", "4", "5"]);
-const displayTypeZ = z.nativeEnum(DisplayType);
+import { useDisplayTypeParams, usePageParams } from "./hooks/useURLParams";
 
 function App() {
-	const [searchParam, setSearchParam] = useSearchParams();
-	let page = Number(searchParam.get("page")) || 1;
-	const pageValidated = pageType.safeParse(page.toString());
-	if (!pageValidated.success) {
-		console.log(pageValidated.error);
-		page = 1; // 使用默认值
-		searchParam.set("page", page.toString());
-		setSearchParam(searchParam, { replace: true });
-	}
+	const { setPage, page } = usePageParams(1);
 
-	let displayType =
-		(searchParam.get("displayType") as DisplayType) || DisplayType.Movies;
-	const displayTypeValidated = displayTypeZ.safeParse(displayType);
-	if (!displayTypeValidated.success) {
-		console.log(displayTypeValidated.error);
-		displayType = DisplayType.Movies;
-		searchParam.set("displayType", displayType);
-		setSearchParam(searchParam, { replace: true });
-	}
-	//PAGE
-
-	const setPage = (p: number): void => {
-		setSearchParam(
-			(prev) => {
-				const newSearchParams = new URLSearchParams(prev);
-				newSearchParams.set("page", p + "");
-				return newSearchParams;
-			},
-			{ replace: true }
-		);
-	};
+	const { displayType } = useDisplayTypeParams(DisplayType.Movies);
 
 	return (
 		<>

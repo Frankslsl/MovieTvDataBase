@@ -1,5 +1,6 @@
 import axios from "axios";
 import { z } from "zod";
+import { DisplayType } from "../Home";
 
 export const searchDataSchema = z.object({
 	page: z.number(),
@@ -26,7 +27,7 @@ export const searchFetchMovies = async ({
 }: {
 	page: number;
 	keyword: string;
-	adult: boolean;
+	adult: string;
 }) => {
 	try {
 		const res = await axios({
@@ -58,7 +59,7 @@ export const searchFetchTvShows = async ({
 }: {
 	page: number;
 	keyword: string;
-	adult: boolean;
+	adult: string;
 }) => {
 	try {
 		const res = await axios({

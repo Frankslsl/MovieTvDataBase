@@ -47,7 +47,7 @@ const NavBarComp = ({ displayType }: Props) => {
 						<Button
 							className="w-50 me-md-5"
 							variant={
-								displayType === DisplayType.TvShow
+								displayType === DisplayType.TvShow && !isSearch
 									? "primary"
 									: "outline-primary"
 							}
@@ -57,6 +57,7 @@ const NavBarComp = ({ displayType }: Props) => {
 						</Button>
 						<Button
 							variant={isSearch ? "primary" : "outline-primary"}
+							className="w-50 me-md-5"
 							onClick={handleSearch}
 						>
 							Search
