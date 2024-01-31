@@ -11,7 +11,7 @@ interface Props {
 	data: DisplayData;
 	displayType: DisplayType;
 }
-
+//use framer-motion library to realize some animation, including gradually appearance, scale when hovering
 export function ColumnDisplay({ data, displayType }: Props) {
 	return (
 		<Container>

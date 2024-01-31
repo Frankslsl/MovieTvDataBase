@@ -6,7 +6,8 @@ type Props = {
 	setPage: (value: number) => void;
 	totalPage: number;
 };
-
+//use react-anchor-link-smooth-scroll library to realize the smooth scrolling in one page
+//the page will scroll to the top smoothly when changing the page
 export const Footer = ({ page, setPage, totalPage }: Props) => {
 	const items: ReactNode[] = [];
 	for (let number = 1; number <= totalPage; number++) {

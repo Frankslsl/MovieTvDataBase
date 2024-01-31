@@ -30,11 +30,9 @@ type TSformData = z.infer<typeof formDataSchema>;
 
 function SearchPage() {
 	const navigate = useNavigate();
-	//set page state
+	//get all params from url
 	const { setPage, page } = usePageParams(1);
-	//set display state
 	const { displayType: searchType } = useDisplayTypeParams(DisplayType.Movies);
-
 	const { adult } = useSearchAdultParams(true);
 	const { keyword } = useSearchKeywordParams("");
 
@@ -67,7 +65,7 @@ function SearchPage() {
 		},
 	});
 
-	//onsubmit
+	//onsubmit: every time submit a form, it will navigate to a new url with all params, and component will be rendered, fetch new data function will be called in useEffect hook
 	const onSubmit = (data: TSformData) => {
 		navigate(
 			`/search?page=${page}&keyword=${data.keyword}&adult=${data.adult}&displayType=${data.searchType}`,
@@ -75,9 +73,8 @@ function SearchPage() {
 		);
 	};
 
-	//recall the fetch function as soon as page has been changed by footer
+	//fetch data according all params in url
 	useEffect(() => {
-		console.log("first");
 		const submitForm = () => {
 			const formData = {
 				keyword,
@@ -88,7 +85,6 @@ function SearchPage() {
 
 			if (keyword !== "") {
 				const formDataValidated = formDataSchema.safeParse(formData);
-				console.log("sec");
 				if (formDataValidated.success) {
 					if (formDataValidated.data.searchType === DisplayType.Movies) {
 						fetchMovie(formData);
@@ -102,7 +98,7 @@ function SearchPage() {
 			}
 		};
 		submitForm();
-	}, [page, keyword, adult, searchType]);
+	}, [page, keyword, adult, searchType, fetchMovie, fetchTvShow]);
 	return (
 		<Container className="mt-3">
 			<Form onSubmit={handleSubmit(onSubmit)}>

@@ -4,6 +4,7 @@ import { mutationLogin } from "./mutation";
 import { Footer } from "@/components/Footer";
 import { fetchMovies, fetchTvShows } from "./querys";
 import { ColumnDisplay } from "@/components/Column-display";
+import { Alert, Container } from "react-bootstrap";
 
 export enum DisplayType {
 	Movies = "movies",
@@ -17,12 +18,12 @@ type Props = {
 };
 
 const Home = ({ page, displayType, setPage }: Props) => {
+	//set the maximum page for home page is 5, if not, the page will be set to 1
 	useEffect(() => {
 		if (page > 5) {
-			console.log("working");
 			setPage(1);
 		}
-	}, [page]);
+	}, [page, setPage]);
 	//this mutation is for auth
 	const { mutate: authMutate } = useMutation({
 		mutationKey: "auth",
@@ -37,9 +38,9 @@ const Home = ({ page, displayType, setPage }: Props) => {
 		if (localStorage.getItem("guest_session_id") === null) {
 			authMutate();
 		}
-	}, []);
+	}, [authMutate]);
 
-	//GET DATA
+	//GET DATA, refetch depend on page
 	const { isLoading: moviesIsLoading, data: moviesData } = useQuery(
 		["movies", page],
 		() => fetchMovies(page)
@@ -54,7 +55,11 @@ const Home = ({ page, displayType, setPage }: Props) => {
 		(displayType === DisplayType.Movies && !moviesData) ||
 		(!tvShowsData && displayType === DisplayType.TvShow)
 	) {
-		return <h1>Data is not available</h1>;
+		return (
+			<Container>
+				<Alert variant="danger">Data is not available</Alert>
+			</Container>
+		);
 	}
 
 	return (

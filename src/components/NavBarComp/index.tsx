@@ -10,13 +10,17 @@ type Props = {
 };
 
 const NavBarComp = ({ displayType }: Props) => {
+	//use this state to tell if the search tag has been chosen, change the css accordingly
 	const [isSearch, setIsSearch] = useState(false);
 	const navigate = useNavigate();
+	//use this hook to tell if the page is scrolled to the top, change the nav css style accordingly
 	const isTop = useIsTop();
+
 	const handleClick = (newDisplayType: DisplayType) => {
 		setIsSearch(false);
 		navigate(`/?displayType=${newDisplayType}&page=1`, { replace: true });
 	};
+
 	const handleSearch = () => {
 		setIsSearch(true);
 		navigate("/search");
@@ -27,10 +31,12 @@ const NavBarComp = ({ displayType }: Props) => {
 			expand="md"
 			className={`bg-body-tertiary`}
 			fixed={isTop ? undefined : "top"}
+			bg={isTop ? "light" : "dark"}
+			data-bs-theme={isTop ? "light" : "dark"}
 		>
 			<Container>
-				<Navbar.Brand href="#home">Movie & TvShow database</Navbar.Brand>
-				<Navbar.Toggle aria-controls="basic-navbar-nav" />
+				<Navbar.Brand href="/">Movie & TvShow database</Navbar.Brand>
+				<Navbar.Toggle />
 				<Navbar.Collapse id="basic-navbar-nav">
 					<Nav className="me-auto">
 						<Button

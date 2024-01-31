@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
 import { fetchTvShow } from "./fetchTvShwoById";
 import {
@@ -8,26 +8,37 @@ import {
 	Image,
 	ListGroup,
 	ListGroupItem,
+	Alert,
 } from "react-bootstrap";
+import { useDetailId } from "@/hooks/useURLParams";
 
 export const TvShowDetails = () => {
+	//use navigate to navigate to home page if session_id is expired
 	const navigate = useNavigate();
-	const { id } = useParams<string>();
+	const { id } = useDetailId();
 
-	if (!id) {
-		return <div>Invalid Movie ID</div>;
-	}
-
-	// eslint-disable-next-line react-hooks/rules-of-hooks
-	const { data, isLoading } = useQuery(["TvShowDetails"], () =>
-		fetchTvShow(id, navigate)
+	const { data, isLoading } = useQuery(
+		["TvShowDetails", id],
+		() => fetchTvShow(id, navigate),
+		{ enabled: id !== "" }
 	);
+	if (!id) {
+		return (
+			<Container style={{ marginTop: 20 }}>
+				<Alert variant="danger">Invalid TV show ID</Alert>
+			</Container>
+		);
+	}
 
 	if (isLoading) {
-		return <h1>Data is Loading</h1>;
+		return <Alert variant="info">Loading</Alert>;
 	}
 	if (!data) {
-		return <h1>Data is not available</h1>;
+		return (
+			<Container>
+				<Alert variant="danger">Movie data is not available.</Alert>
+			</Container>
+		);
 	}
 	return (
 		<Container style={{ marginTop: 20 }}>

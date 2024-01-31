@@ -1,4 +1,7 @@
 import { useState, useEffect } from "react";
+
+//customize hooks to check if the page is scrolled to the top
+
 export function useIsTop(): boolean {
 	const [isTop, setIsTop] = useState(true);
 	useEffect(() => {
