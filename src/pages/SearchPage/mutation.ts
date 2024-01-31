@@ -1,6 +1,5 @@
 import axios from "axios";
 import { z } from "zod";
-import { DisplayType } from "../Home";
 
 export const searchDataSchema = z.object({
 	page: z.number(),

@@ -33,12 +33,10 @@ function SearchPage() {
 	//set page state
 	const { setPage, page } = usePageParams(1);
 	//set display state
-	const { displayType: searchType, setDisplayType } = useDisplayTypeParams(
-		DisplayType.Movies
-	);
+	const { displayType: searchType } = useDisplayTypeParams(DisplayType.Movies);
 
-	const { adult, setAdult } = useSearchAdultParams(true);
-	const { keyword, setKeyword } = useSearchKeywordParams("");
+	const { adult } = useSearchAdultParams(true);
+	const { keyword } = useSearchKeywordParams("");
 
 	//set useForm
 	const {
