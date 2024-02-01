@@ -97,7 +97,10 @@ export const useSearchKeywordParams = (value: string) => {
 
 export const useSearchAdultParams = (value: boolean) => {
 	const [searchParam, setSearchParam] = useSearchParams();
-	const adult = searchParam.get("adult") === "true" || value;
+	let adult = searchParam.get("adult") === "true";
+	if (adult === undefined || null) {
+		adult = value;
+	}
 	const [adultReturn, setAdultReturn] = useState(adult);
 	useEffect(() => {
 		const adultValidated = adultType.safeParse(adult);
@@ -119,6 +122,7 @@ export const useSearchAdultParams = (value: boolean) => {
 			{ replace: true }
 		);
 	};
+	console.log("adultReturn ===> " + adultReturn);
 	return { adult: adultReturn, setAdult };
 };
 
