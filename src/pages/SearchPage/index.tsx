@@ -82,6 +82,7 @@ function SearchPage() {
 				searchType,
 				page,
 			};
+			console.log("ssss" + formData.adult);
 
 			if (keyword !== "") {
 				const formDataValidated = formDataSchema.safeParse(formData);
