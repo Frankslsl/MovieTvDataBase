@@ -105,7 +105,7 @@ export const MovieDetails = () => {
 							</ListGroupItem>
 							<ListGroupItem className="border-0 py-0 mb-1">
 								<h6 className="m-0 fst-italic">Vote Average: </h6>
-								<p className="m-0">{data.vote_average} mins</p>
+								<p className="m-0">{data.vote_average}</p>
 							</ListGroupItem>
 							<ListGroupItem className="border-0 py-0 mb-1">
 								<h6 className="m-0 fst-italic">Language: </h6>
