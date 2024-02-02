@@ -55,6 +55,7 @@ export const TvShowDetails = () => {
 							whileInView={{ opacity: 1, x: 0 }}
 							viewport={{ once: true, amount: 0.5 }}
 							transition={{ duration: 0.5 }}
+							className="mb-sm-3 mb-md-0"
 						>
 							<Image
 								style={{ maxHeight: "700px" }}

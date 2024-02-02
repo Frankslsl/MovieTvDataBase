@@ -31,7 +31,10 @@ export function ColumnDisplay({ data, displayType }: Props) {
 									viewport={{ once: true, amount: 0.2 }}
 									transition={{ delay: 0.05 * index }}
 								>
-									<Card style={{ height: "750px" }}>
+									<Card
+										style={{ height: "750px", maxWidth: "325px" }}
+										className="mx-auto"
+									>
 										<Card.Img
 											variant="top"
 											src={`https://image.tmdb.org/t/p/original/${item.poster_path}`}

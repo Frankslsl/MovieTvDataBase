@@ -40,7 +40,7 @@ const NavBarComp = ({ displayType }: Props) => {
 				<Navbar.Collapse id="basic-navbar-nav">
 					<Nav className="me-auto">
 						<Button
-							className="w-50 me-md-5 ms-md-5"
+							className="w-50 me-md-5 ms-md-5 mb-sm-3 mb-md-0"
 							variant={
 								displayType === DisplayType.Movies && !isSearch
 									? "primary"
@@ -51,7 +51,7 @@ const NavBarComp = ({ displayType }: Props) => {
 							Movie
 						</Button>
 						<Button
-							className="w-50 me-md-5"
+							className="w-50 me-md-5 mb-sm-3 mb-md-0"
 							variant={
 								displayType === DisplayType.TvShow && !isSearch
 									? "primary"
